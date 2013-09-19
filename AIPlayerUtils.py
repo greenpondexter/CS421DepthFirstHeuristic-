@@ -86,8 +86,9 @@ def getAntList(currentState,
 #
 def getConstrList(currentState,
                   pid = None,
-                  types = (ANTHILL, TUNNEL, GRASS, FOOD) ):
+                  types = 0 ):
 
+    #print types
     #start with a list of all constrs that belong to the indicated player(s)
     allConstrs = []
     for inv in currentState.inventories:
@@ -97,7 +98,8 @@ def getConstrList(currentState,
     #fill the result with constrs that are of the right type
     result = []
     for constr in allConstrs:
-        if constr.type in types:
+        if constr.type == types:
+            print constr.coords
             result.append(constr)
 
     return result

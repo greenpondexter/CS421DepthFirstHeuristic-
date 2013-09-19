@@ -82,7 +82,12 @@ class AIPlayer(Player):
                     ant.coords = dst
                     myAnt = ant
             #finds the ant worthiest for attack
-            inRange = self.getAttack(newState, myAnt, theirInv.ants).coords
+            enemyAnts = getAntList(newState, PLAYER_ONE, (QUEEN, WORKER, DRONE, SOLDIER, R_SOLDIER))
+            enemyAntsCoords = []
+            for ant in enemyAnts:
+                enemyAntsCoords.append(ant.coords)
+            #inRange = self.getAttack(newState, myAnt, theirInv.ants, enemyAntsCoords).coords
+            inRange = self.getAttack(newState, myAnt, enemyAntsCoords)
             #attacks the inRange ant by lowering its health by one
             if inRange is not None:
                 #lowers ant health by attack power of myAnt
@@ -92,13 +97,12 @@ class AIPlayer(Player):
                     if ant.coords == inRange:
                         ant.health -= attackPower
                 #removes the ant if its health is 0
-                if newState.board[inRange[0]][inRange[1]].ant.health <= 0:
-                    deadAnt = newState.board[inRange[0]][inRange[1]].ant
-                    newState.board[inRange[0]][inRange[1]].ant = None
+                if getAntAt(newState, inRange).health <= 0:
+                    deadAnt = getAntAt(newState, inRange)
                     theirInv.ants.remove(deadAnt)
             #finds rules for ants sitting on food, tunnels or anthills
             for ant in myInv.ants:
-                constr = newState.board[ant.coords[0]][ant.coords[1]].constr
+                constr = getConstrAt(newState, ant.coords)
                 #narrows rule to apply only for workers sitting on a construction
                 if ant.type == WORKER and constr is not None:
                     #if on my side of the board, compensate for food transportation
@@ -113,13 +117,11 @@ class AIPlayer(Player):
                     elif constr.type <= TUNNEL:
                         if constr.captureHealth > 1:
                             constr.captureHealth -= 1
-                            newState.board[ant.coords[0]][ant.coords[1]].constr = constr
                             for c in theirInv.constrs:
                                 if c.coords == constr.coords:
                                     c = constr
                         #remove if the constr is at health one
                         else:
-                            newState.board[ant.coords[0]][ant.coords[1]].constr = None
                             theirInv.constrs.remove(constr)
 
         #deals with build actions
@@ -132,13 +134,12 @@ class AIPlayer(Player):
                 #creates the new building as per specified
                 newBuilding = Building(loc, TUNNEL, newState.whoseTurn)
                 #fits newBuilding into the board and inventory
-                newState.board[loc[1]][loc[1]].constr = newBuilding
                 myInv.constrs.append(newBuilding)
             #deals with building an ant, works the same as tunnel except with ant objects
             else:
                 myInv.foodCount -= UNIT_STATS[move.buildType][COST]
                 newAnt = Ant(loc, move.buildType, newState.whoseTurn)
-                newState.board[loc[1]][loc[1]].ant = newAnt
+                #newState.board[loc[1]][loc[1]].ant = newAnt
                 myInv.ants.append(newAnt)
         #update the inventories and return the state
         for inv in newState.inventories:
@@ -215,20 +216,30 @@ class AIPlayer(Player):
     def getCurrPlayerFoodLocation(self, myInv, newState):
         foodLocations = []
         #look for the two food items on Hufflepuff's side and append them foodLocations[]
-        for col in range (0,10):
-            for row in range (0,4):
-                if not newState.board[col][row].constr == None:
-                    if newState.board[col][row].constr.type == FOOD:
-                        foodLocations.append(newState.board[col][row].coords)
 
+        #for col in range (0,10):
+        #    for row in range (0,4):
+        #        if not newState.board[col][row].constr == None:
+                #if not newState.board[col][row].constr == None:
+        #            if newState.board[col][row].constr.type == FOOD:
+        #                foodLocations.append(newState.board[col][row].coords)
+        food = []
+        food = getConstrList(newState, NEUTRAL, FOOD)
+        for piece in food:
+            if piece.coords[1] <= 4:
+                foodLocations.append(piece)
+                print piece.coords
+        print "c"
         #find the anthill
-        for constr in myInv.constrs:
-            if constr.type == ANTHILL:
-                anthill = constr.coords
-
+        anthill = getConstrList(newState, PLAYER_TWO, ANTHILL)
+        print "a"
+        print foodLocations[0]
+        print anthill[0].coords
+        print "b"
+        sys.stdout.flush()
         #get the distances between the anthill and the two food locations in hopes of finding the shortest distance
-        anthillToFoodLocationOneDistance = self.distance(foodLocations[0], anthill)
-        anthillToFoodLocationTwoDistance = self.distance(foodLocations[1], anthill)
+        anthillToFoodLocationOneDistance = self.distance(foodLocations[0].coords, anthill[0].coords)
+        anthillToFoodLocationTwoDistance = self.distance(foodLocations[1].coords, anthill[0].coords)
 
         if anthillToFoodLocationOneDistance < anthillToFoodLocationTwoDistance:
             return foodLocations[0]
@@ -288,7 +299,7 @@ class AIPlayer(Player):
         for ant in myInv.ants:
             if ant.type == WORKER and self.foodSwitch == False and (ant.carrying == False or ant.coords == foodCoords):
                 #get the distance between the food and the ant
-                distance = self.distance(ant.coords, foodCoords)
+                distance = self.distance(ant.coords, foodCoords.coords)
                 if ant.coords == foodCoords:
                     self.foodSwitch = True
                     counter += .1
@@ -337,8 +348,9 @@ class AIPlayer(Player):
                 distance = self.distance(anthillCoords, ant.coords)
                 #it would at minimum require me 15+ sentences to give a less than satisfactory explanation for, much
                 #less an adaquete one
-                if not newState.board[self.chosenFoodCoords[0]][self.chosenFoodCoords[1]].ant == None and \
-                            ant.coords == anthillCoords and anyAntsCarrying == True:
+                #if not newState.board[self.chosenFoodCoords[0]][self.chosenFoodCoords[1]].ant == None and \
+                if getConstrAt(newState, self.chosenFoodCoords).ant == None and \
+                    ant.coords == anthillCoords and anyAntsCarrying == True:
                     self.foodSwitch == False
                     return -1
                 #this essentially triggers the ants to start finding food again, as
@@ -518,10 +530,16 @@ class AIPlayer(Player):
                             inRange = ant.coords
                         #if the ant inRange isn't the queen, attack the ant with less health
                         elif inRange != inv.getQueen().coords:
-                            if currentState.board[inRange[0]][inRange[1]].ant.health > ant.health:
+                            if getAntAt(currentState, inRange) > ant.health:
                                 inRange = ant.coords
-        return enemyLocations[random.randint(0, len(enemyLocations) - 1)]
 
+        return inRange
+            #return enemyLocations[random.randint(0, len(enemyLocations) - 1)]
+
+#######------------------------------------------------------------------------------------------------------------------------------
+#######------------------------------------------------------------------------------------------------------------------------------
+#######------------------------------------------------------------------------------------------------------------------------------
+#######------------------------------------------------------------------------------------------------------------------------------
 
 
 
