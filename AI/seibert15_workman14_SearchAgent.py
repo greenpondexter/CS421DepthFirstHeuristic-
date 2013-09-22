@@ -22,6 +22,34 @@ import sys
 #Variables:
 #   playerId - The id of the player.
 ##
+
+
+class StateNode:
+        #move, currentState, newState, qualOfState
+        ##
+        #__init__
+        #Description: Initializes the StateNode object
+        #
+        #Parameters:
+        # parentNode - the node that is indended to be the new node's parent
+        # move - the move that will be used to create the new state
+        #
+        #
+        ##
+        def __init__(self, move, newState, qualOfState, parentNode):
+            #save the parameters for later reference
+            self.parent = parentNode
+            self.arrivalMove = move
+            #create and evaluate the state that will be represented by this node
+            self.currentState = newState
+            self.evaluation = qualOfState
+            #initialize the array for children
+            self.children = []
+            #go and put self in parent's children list
+            if not parentNode == None:
+                self.parent.children.append(self)
+
+
 class AIPlayer(Player):
 
     #__init__
@@ -48,6 +76,103 @@ class AIPlayer(Player):
     #
     def distance(self, tuple1, tuple2):
         return int(math.fabs(tuple1[0]-tuple2[0]) + math.fabs(tuple1[1]-tuple2[1]))    ##
+
+
+    ##
+    #StateNode
+    #Description: A node for a tree that describes a given state for Antics
+    #
+    #Variables:
+    # parent - the parent node of this StateNode
+    # children - a list of all of this node's children
+    # arrivalMove - the move that brought the game to this state
+    # newState - the state that arrival move would produce, based on its parent
+    # evaluation - the score [0,1] that represents newState
+    #
+    #
+    ##
+
+
+        ##
+    #getMove
+    #Description: Gets the next move from the Player.
+    #
+    #Parameters:
+    #   currentState - The state of the current game waiting for the player's move (GameState)
+    #
+    #Return: The Move to be made
+    ##
+    '''def getMove(self, currentState):
+        bestMove = None
+        bestProbability = None
+        for move in listAllLegalMoves(currentState):
+            #print "1"
+            newMove = move
+            newState = self.simulateMove(move, currentState.fastclone())
+            if bestMove is None or bestProbability < self.stateQuality(newState, currentState):
+                bestMove = move
+                bestProbability = self.stateQuality(newState, currentState)
+                print bestProbability
+                print bestMove
+
+        p = 8
+        return bestMove'''
+
+    def bestNode(self, nodeList):
+
+        highestEval = 0
+        bestNode = None
+        counter = 0
+
+        for node in nodeList:
+            if counter == 0:
+                bestNode = node
+                highestEval = node.evaluation
+
+            elif node.evaluation >= highestEval:
+                bestNode = node
+                highestEval = node.evaluation
+
+        return bestNode
+
+    #self, move, newState, currentState, qualOfState, parentNode
+    def exploreTree(self, currentState, PID = 0, depth = 0, depthLimit = 1, parentNode = None):
+
+        #if depth == 0:
+        #   ParentNode = None
+
+
+        if (depth == depthLimit):
+            nodesToChooseFrom = []
+            for move in listAllLegalMoves(currentState):
+                newState = self.simulateMove(move, currentState.fastclone())
+                qualOfState = self.stateQuality(newState, currentState)
+                bestNode = StateNode(move, newState, qualOfState, parentNode)
+                nodesToChooseFrom.append(bestNode)
+
+            theBest = self.bestNode(nodesToChooseFrom)
+            return theBest
+
+        else:
+            depth+= 1
+            for move in listAllLegalMoves(currentState):
+                newState = self.simulateMove(move, currentState.fastclone())
+                qualOfState = self.stateQuality(newState, currentState)
+                node = StateNode(move, newState, qualOfState, parentNode)
+                successorNode = self.exploreTree(node.currentState, PLAYER_ONE, depth, 1, node)
+                node.evaluation = (node.evaluation+successorNode.evaluation*(depthLimit-depth))/(depthLimit-depth-1)
+                return node
+
+
+
+    def getMove(self, currentState):
+        move = None
+        qualOfState = None
+        parentNode = None
+        node = StateNode(move, currentState, qualOfState, parentNode)
+        return self.exploreTree(currentState, PLAYER_TWO, 0, 1, node)
+
+
 
     ##
     #simulateMove
@@ -147,6 +272,16 @@ class AIPlayer(Player):
                 inv = myInv
             else:
                 inv = theirInv
+
+        for inv in newState.inventories:
+            if inv.player == newState.whoseTurn:
+                myInv = inv
+
+        for ant in myInv.ants:
+            ant.hasMoved = False
+
+        newState.whoseTurn = PLAYER_TWO
+
         return newState
 
     ##
@@ -224,16 +359,16 @@ class AIPlayer(Player):
         #            if newState.board[col][row].constr.type == FOOD:
         #                foodLocations.append(newState.board[col][row].coords)
         food = []
-        food = getConstrList(newState, NEUTRAL, FOOD)
+        food = getConstrList(newState, NEUTRAL, (FOOD,))
         for piece in food:
             if piece.coords[1] <= 4:
                 foodLocations.append(piece)
                 print piece.coords
         print "c"
         #find the anthill
-        anthill = getConstrList(newState, PLAYER_TWO, ANTHILL)
+        anthill = getConstrList(newState, PLAYER_TWO, (ANTHILL,))
         print "a"
-        print foodLocations[0]
+        #print foodLocations[0]
         print anthill[0].coords
         print "b"
         sys.stdout.flush()
@@ -483,28 +618,6 @@ class AIPlayer(Player):
         else:
             return [(0, 0)]
 
-    ##
-    #getMove
-    #Description: Gets the next move from the Player.
-    #
-    #Parameters:
-    #   currentState - The state of the current game waiting for the player's move (GameState)
-    #
-    #Return: The Move to be made
-    ##
-    def getMove(self, currentState):
-        bestMove = None
-        bestProbability = None
-        for move in listAllLegalMoves(currentState):
-            #print "1"
-            newMove = move
-            newState = self.simulateMove(move, currentState.fastclone())
-            if bestMove is None or bestProbability < self.stateQuality(newState, currentState):
-                bestMove = move
-                bestProbability = self.stateQuality(newState, currentState)
-                print bestProbability
-                print bestMove
-        return bestMove
 
     ##
     #getAttack
@@ -536,184 +649,7 @@ class AIPlayer(Player):
         return inRange
             #return enemyLocations[random.randint(0, len(enemyLocations) - 1)]
 
-#######------------------------------------------------------------------------------------------------------------------------------
-#######------------------------------------------------------------------------------------------------------------------------------
-#######------------------------------------------------------------------------------------------------------------------------------
-#######------------------------------------------------------------------------------------------------------------------------------
 
-
-
-board = [[Location((col, row)) for row in xrange(0,BOARD_LENGTH)] for col in xrange(0,BOARD_LENGTH)]
-inventories = []
-inv1 = None
-inv2 = None
-ants = []
-constrs = []
-
-
-num = 15
-i = 0
-locations = []
-#Generate 15 random locations on PLAYER_ONE side for the
-# Anthill, Tunnel
-# 9 Pieces of Grass
-# Worker and Queen
-# 2 Food Objects
-
-while i < num:
-    if i == 0:
-        x = random.randint(0, 9)
-        y = random.randint(0, 4)
-        locations.append((x,y))
-        i+= 1
-    else:
-         x = random.randint(0, 9)
-         y = random.randint(0, 4)
-         while (x,y) in locations:
-            x = random.randint(0, 9)
-            y = random.randint(0, 4)
-         locations.append((x,y))
-         i+= 1
-
-print locations
-sys.stdout.flush()
-
-board[locations[0][0]][locations[0][1]].ant = None
-#create ANTHILL construction object
-construction = Construction((locations[0][0], locations[0][1]), ANTHILL)
-# add this object to the constrs [], which will individually be added to PLAYER_ONE inventory
-constrs.append(construction)
-
-board[locations[0][0]][locations[0][1]].constr = construction
-board[locations[0][0]][locations[0][1]].coords = (locations[0][0], locations[0][1])
-
-board[locations[1][0]][locations[1][1]].ant = None
-construction = Construction((locations[1][0], locations[1][1]), TUNNEL)
-# add this object to the constrs [], which will individually be added to PLAYER_ONE inventory
-constrs.append(construction)
-
-board[locations[1][0]][locations[1][1]].constr = construction
-board[locations[1][0]][locations[1][1]].coords = (locations[1][0], locations[1][1])
-
-#Creating GRASS objects and adjusting the board locatios accordingly
-for i in range(2,11):
-    coords = (locations[i][0], locations[i][1])
-    construction = Construction((locations[i][0], locations[i][1]), GRASS)
-
-    board[locations[i][0]][locations[i][1]].constr = construction
-    board[locations[i][0]][locations[i][1]].ant = None
-    board[locations[i][0]][locations[i][1]].coords = coords
-
-
-
-ant_1 = Ant((locations[11][0], locations[11][1]), QUEEN, PLAYER_ONE)
-# add this object to the ants[], which will individually be added to PLAYER_ONE inventory
-ants.append(ant_1)
-
-ant_2 = Ant((locations[12][0], locations[12][1]), WORKER, PLAYER_ONE)
-# add this object to the ants[], which will individually be added to PLAYER_ONE inventory
-ants.append(ant_2)
-
-board[locations[11][0]][locations[11][1]].ant = ant_1
-board[locations[12][0]][locations[12][1]].ant = ant_2
-
-food1 = Construction((locations[13][0], locations[13][1]), FOOD)
-food2 = Construction((locations[14][0], locations[14][1]), FOOD)
-
-board[locations[13][0]][locations[13][1]].constr = food1
-board[locations[14][0]][locations[14][1]].constr = food2
-
-
-# create inventory object for player one, this will be added to the Inventories [] list object for the Gamestate
-inv1 = Inventory(PLAYER_ONE, ants, constrs, 3)
-
-
-
-##-------------------##
-#PLAYER 2
-ants2 = []
-constrs2 = []
-
-num = 15
-i = 0
-locations = []
-#Generate 15 random locations on PLAYER_TWO side for the
-# Anthill, Tunnel
-# 9 Pieces of Grass
-# Worker and Queen
-# 2 Food Objects
-while i < num:
-    if i == 0:
-        x = random.randint(0, 9)
-        y = random.randint(5, 9)
-        locations.append((x,y))
-        i+= 1
-    else:
-         x = random.randint(0, 9)
-         y = random.randint(5, 9)
-         while (x,y) in locations:
-            x = random.randint(0, 9)
-            y = random.randint(5, 9)
-         locations.append((x,y))
-         i+= 1
-
-
-board[locations[0][0]][locations[0][1]].ant = None
-#create ANTHILL construction object
-construction = Construction((locations[0][0], locations[0][1]), ANTHILL)
-# add this object to the constrs [], which will individually be added to PLAYER_TWO inventory
-constrs2.append(construction)
-
-board[locations[0][0]][locations[0][1]].constr = construction
-board[locations[0][0]][locations[0][1]].coords = (locations[0][0], locations[0][1])
-
-board[locations[1][0]][locations[1][1]].ant = None
-construction = Construction((locations[1][0], locations[1][1]), TUNNEL)
-# add this object to the constrs [], which will individually be added to PLAYER_TWO inventory
-constrs2.append(construction)
-
-board[locations[1][0]][locations[1][1]].constr = construction
-board[locations[1][0]][locations[1][1]].coords = (locations[1][0], locations[1][1])
-
-#Creating GRASS objects and adjusting the board locations accordingly
-for i in range(2,11):
-    coords = (locations[i][0], locations[i][1])
-    construction = Construction((locations[i][0], locations[i][1]), GRASS)
-
-    board[locations[i][0]][locations[i][1]].constr = construction
-    board[locations[i][0]][locations[i][1]].ant = None
-    board[locations[i][0]][locations[i][1]].coords = coords
-
-
-
-ant_1 = Ant((locations[11][0], locations[11][1]), QUEEN, PLAYER_ONE)
-# add this object to the ants[], which will individually be added to PLAYER_ONE inventory
-ants2.append(ant_1)
-
-ant_2 = Ant((locations[12][0], locations[12][1]), WORKER, PLAYER_ONE)
-# add this object to the ants[], which will individually be added to PLAYER_ONE inventory
-ants2.append(ant_2)
-
-board[locations[11][0]][locations[11][1]].ant = ant_1
-board[locations[12][0]][locations[12][1]].ant = ant_2
-
-food1 = Construction((locations[13][0], locations[13][1]), FOOD)
-food2 = Construction((locations[14][0], locations[14][1]), FOOD)
-
-board[locations[13][0]][locations[13][1]].constr = food1
-board[locations[14][0]][locations[14][1]].constr = food2
-
-
-# create inventory object for player one, this will be added to the Inventories [] list object for the Gamestate
-inv2 = Inventory(PLAYER_TWO, ants2, constrs2, 3)
-
-inventories.append(inv2)
-
-gamestate = GameState(board, inventories, PLAY_PHASE, PLAYER_ONE)
-
-
-print gamestate.phase
-john = AIPlayer("The Huff")
 
 
 

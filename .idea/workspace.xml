@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/Player.py" description="def getPlacement(self, currentState):" line="32" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="2addd276-3b36-446f-be5d-adbeab8bc83c" name="Default" comment="" />
+    <list default="true" id="2addd276-3b36-446f-be5d-adbeab8bc83c" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AIPlayerUtils.py" afterPath="$PROJECT_DIR$/AIPlayerUtils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py" afterPath="$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="Antics.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/seibert15_workman14_SearchAgent.py" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379562608865" ignored="false" />
+    <file path="/seibert15_workman14_SearchAgent.py" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379804126427" ignored="false" />
+    <file path="/AIPlayerUtils.py" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379659261122" ignored="false" />
+    <file path="/Dummy.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379658191868" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/scraper" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379729835344" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/scraper.py" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379828966502" ignored="false" />
+    <file path="/scraper.py" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379828966502" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/SP500Abbrevs" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379732161315" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/BalanceSheetItems.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379739957499" ignored="false" />
+    <file path="/BalanceSheetItems.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379739244791" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/AbbrevsTest.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379826582796" ignored="false" />
+    <file path="/MainBalanceSheetItems.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379825380298" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/MainBalanceSheetItems.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379825702504" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/SP500Abbrevs.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379830514635" ignored="false" />
+    <file path="$USER_HOME$/PycharmProjects/FinanceScraper/CompaniesAlreadyDone.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379830390951" ignored="false" />
+    <file path="/SP500Abbrevs.txt" changelist="2addd276-3b36-446f-be5d-adbeab8bc83c" time="1379830511656" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,10 +49,8 @@
       <file leaf-file-name="AIPlayer.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AI/AIPlayer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state line="110" column="0" selection-start="4232" selection-end="4256" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -38,7 +58,54 @@
       <file leaf-file-name="seibert15_workman14_SearchAgent.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="17" selection-start="3441" selection-end="3441" vertical-scroll-proportion="0.0">
+            <state line="172" column="0" selection-start="5591" selection-end="5591" vertical-scroll-proportion="-20.2">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pydevd.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1480" column="0" selection-start="59057" selection-end="59101" vertical-scroll-proportion="2.1574345">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Player.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="45" column="8" selection-start="1321" selection-end="1321" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Constants.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AIPlayerUtils.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/AIPlayerUtils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="97" column="42" selection-start="2727" selection-end="2727" vertical-scroll-proportion="-8.0">
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Construction.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Construction.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="13" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -53,24 +120,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Game.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Game.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Game.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="19" column="24" selection-start="408" selection-end="408" vertical-scroll-proportion="0.78512394">
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AIPlayerUtils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/AIPlayerUtils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state line="260" column="0" selection-start="13201" selection-end="13201" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -78,10 +132,8 @@
       <file leaf-file-name="GameState.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GameState.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="45" column="31" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
+            <state line="176" column="0" selection-start="6353" selection-end="6353" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -93,20 +145,29 @@
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/AIPlayerUtils.py" />
         <option value="$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-2" />
+    <option name="x" value="21" />
     <option name="y" value="22" />
-    <option name="width" value="1260" />
-    <option name="height" value="722" />
+    <option name="width" value="2070" />
+    <option name="height" value="731" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -132,6 +193,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -166,16 +228,16 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="reference.settingsdialog.project.vagrant" />
+    <property name="options.lastSelected" value="settings.github" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Game.py" />
     <property name="restartRequiresConfirmation" value="true" />
+    <property name="FullScreen" value="false" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
@@ -266,7 +328,7 @@
       <module name="Antics" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Game.py" />
-      <option name="PARAMETERS" value="debug Random &quot;The Hufflepuff&quot;" />
+      <option name="PARAMETERS" value="debug &quot;The Hufflepuff&quot; random" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -304,26 +366,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="22" width="1260" height="722" extended-state="0" />
-    <editor active="true" />
+    <frame x="21" y="22" width="2070" height="731" extended-state="0" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958813" sideWeight="0.6710963" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24958813" sideWeight="0.6710963" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3986711" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32890365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21898228" sideWeight="0.68062013" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17490119" sideWeight="0.60720134" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3927987" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32890365" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25476736" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -384,22 +446,37 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="python-line">
+          <url>file://$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py</url>
+          <line>368</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py</url>
+          <line>153</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="25" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/random.py">
+    <entry file="file://$PROJECT_DIR$/Inventory.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="71" selection-start="7979" selection-end="7979" vertical-scroll-proportion="-26.55851">
+        <state line="14" column="24" selection-start="457" selection-end="457" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AI/AIPlayer.py">
+    <entry file="file://$PROJECT_DIR$/Game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        <state line="1199" column="29" selection-start="57125" selection-end="57125" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -412,20 +489,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py">
+    <entry file="file://$PROJECT_DIR$/GameState.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="17" selection-start="3441" selection-end="3441" vertical-scroll-proportion="0.0">
+        <state line="45" column="31" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/GameState.py">
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/random.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="45" column="31" selection-start="1420" selection-end="1420" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="209" column="71" selection-start="7979" selection-end="7979" vertical-scroll-proportion="-26.55851" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Inventory.py">
@@ -435,12 +508,75 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Construction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="13" selection-start="297" selection-end="297" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd_breakpoints.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="0" selection-start="2316" selection-end="2316" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="8" selection-start="1321" selection-end="1321" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AI/AIPlayer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="0" selection-start="4232" selection-end="4256" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AIPlayerUtils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="42" selection-start="2727" selection-end="2727" vertical-scroll-proportion="-8.0">
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GameState.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="176" column="0" selection-start="6353" selection-end="6353" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Constants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Game.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="24" selection-start="408" selection-end="408" vertical-scroll-proportion="0.78512394">
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
+        <state line="260" column="0" selection-start="13201" selection-end="13201" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AI/seibert15_workman14_SearchAgent.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="172" column="0" selection-start="5591" selection-end="5591" vertical-scroll-proportion="-20.2">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1480" column="0" selection-start="59057" selection-end="59101" vertical-scroll-proportion="2.1574345">
+          <folding />
         </state>
       </provider>
     </entry>
