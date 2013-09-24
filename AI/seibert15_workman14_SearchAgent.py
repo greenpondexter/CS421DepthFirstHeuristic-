@@ -133,6 +133,8 @@ class AIPlayer(Player):
                 bestNode = node
                 highestEval = node.evaluation
 
+            counter+=1
+
         return bestNode
 
     #self, move, newState, currentState, qualOfState, parentNode
@@ -157,8 +159,8 @@ class AIPlayer(Player):
                 newState = self.simulateMove(move, currentState.fastclone())
                 qualOfState = self.stateQuality(newState, currentState)
                 node = StateNode(move, newState, qualOfState, parentNode)
-                successorNode = self.exploreTree(node.currentState, PLAYER_ONE, depth, 1, node)
-                node.evaluation = (node.evaluation+successorNode.evaluation*(depthLimit-depth))/(depthLimit-depth-1)
+                successorNode = self.exploreTree(node.currentState, self.playerId, depth, depthLimit, node)
+                #node.evaluation = (node.evaluation+successorNode.evaluation*(depthLimit-depth))/(depthLimit-depth-1)
                 nodeList.append(node)
 
             theB = self.bestNode(nodeList)
@@ -168,10 +170,11 @@ class AIPlayer(Player):
 
     def getMove(self, currentState):
         move = None
-        qualOfState = None
+        qualOfState = 0
         parentNode = None
         node = StateNode(move, currentState, qualOfState, parentNode)
-        bestNode = self.exploreTree(currentState, PLAYER_TWO, 0, 1, node)
+        #print ",,,,", node.evaluation
+        bestNode = self.exploreTree(currentState, self.playerId, 0, 1, node)
         print bestNode.evaluation
         return bestNode.arrivalMove
 
@@ -239,6 +242,7 @@ class AIPlayer(Player):
                         elif constr.type <= TUNNEL and ant.carrying:
                             ant.carrying = False
                             inv.foodCount += 1
+                            #print "z"
                     #if the worker is sitting on an anthill or tunnel on the other side of the
                     #board, modify capture health
                     elif constr.type <= TUNNEL:
@@ -282,7 +286,7 @@ class AIPlayer(Player):
         for ant in myInv.ants:
             ant.hasMoved = False
 
-        newState.whoseTurn = PLAYER_TWO
+        newState.whoseTurn = self.playerId
 
         return newState
 
@@ -312,7 +316,8 @@ class AIPlayer(Player):
         variables.append((self.hasLost(myInv), .01))
         variables.append((self.varProximityToFood(myInv, newState), .4))
         variables.append((self.varProximityToAnthill(myInv, newState), .4))
-        variables.append((self.varQueenProximityToCorner(myInv), .2))
+        variables.append((self.varQueenProximityToCorner(myInv), .4))
+        variables.append((self.food(myInv, newState, currentState), .4))
 
         if variables[0] == 100:
             return 1
@@ -365,14 +370,14 @@ class AIPlayer(Player):
         for piece in food:
             if piece.coords[1] <= 4:
                 foodLocations.append(piece)
-                print piece.coords
-        print "c"
+                #print piece.coords
+        #print "c"
         #find the anthill
-        anthill = getConstrList(newState, PLAYER_TWO, (ANTHILL,))
-        print "a"
+        anthill = getConstrList(newState, self.playerId, (ANTHILL,))
+        #print "a"
         #print foodLocations[0]
-        print anthill[0].coords
-        print "b"
+        #print anthill[0].coords
+        #print "b"
         sys.stdout.flush()
         #get the distances between the anthill and the two food locations in hopes of finding the shortest distance
         anthillToFoodLocationOneDistance = self.distance(foodLocations[0].coords, anthill[0].coords)
@@ -434,7 +439,7 @@ class AIPlayer(Player):
         self.chosenFoodCoords = foodCoords
         #look for a worker and who isn't carrying food and try and guide it to the food
         for ant in myInv.ants:
-            if ant.type == WORKER and self.foodSwitch == False and (ant.carrying == False or ant.coords == foodCoords):
+            if ant.type == WORKER and (ant.carrying == False or ant.coords == foodCoords):
                 #get the distance between the food and the ant
                 distance = self.distance(ant.coords, foodCoords.coords)
                 if ant.coords == foodCoords:
@@ -442,17 +447,19 @@ class AIPlayer(Player):
                     counter += .1
                     return counter
                 if distance > 4:
-                    counter += .2
+                    counter += .1
                 elif distance > 3:
-                    counter += .3
+                    counter += .11
                 elif distance > 2:
-                    counter += .4
+                    counter += .3
                 elif distance > 1:
-                    counter += .5
+                    counter += .4
                 elif distance > 0:
-                    counter += .7
+                    counter += .5
                 elif distance == 0:
                     counter += 1
+            elif ant.carrying == True:
+                counter += 1
 
         return counter
 
@@ -474,43 +481,58 @@ class AIPlayer(Player):
         for constr in myInv.constrs:
             if constr.type == ANTHILL:
                 anthillCoords = constr.coords
-        #determine wheter or not an any in your inventory is carrying food
+        #determine wheter or not an ant in your inventory is carrying food
         for ant in myInv.ants:
             #if so, turn the foodswith on (true) so ant can tyr and find its anthill to cash in
             if anyAntsCarrying == True:
                 self.foodSwitch == True
             #if the given ant is a worker, try and get it close to the anthill
-            if ant.type == WORKER and self.foodSwitch == True and (ant.carrying == True or ant.coords == anthillCoords):
+            if ant.type == WORKER and ant.carrying == True:
                 #determine the distance between the anthill and the given ant
                 distance = self.distance(anthillCoords, ant.coords)
                 #it would at minimum require me 15+ sentences to give a less than satisfactory explanation for, much
                 #less an adaquete one
                 #if not newState.board[self.chosenFoodCoords[0]][self.chosenFoodCoords[1]].ant == None and \
-                if getConstrAt(newState, self.chosenFoodCoords).ant == None and \
-                    ant.coords == anthillCoords and anyAntsCarrying == True:
-                    self.foodSwitch == False
-                    return -1
+                #if getConstrAt(newState, self.chosenFoodCoords).ant == None and \
+                #   ant.coords == anthillCoords and anyAntsCarrying == True:
+                #   self.foodSwitch == False
+                #   return -1
                 #this essentially triggers the ants to start finding food again, as
-                elif ant.coords == anthillCoords and anyAntsCarrying == False:
-                    self.foodSwitch = False
-                    counter += .8
-                    return counter
-                elif distance > 4:
-                    counter += .1
+                #if ant.coords == anthillCoords and anyAntsCarrying == False:
+                #    self.foodSwitch = False
+                #    counter += .8
+                #    return counter
+                if distance > 4:
+                    counter += .2
                 elif distance > 3:
-                    counter += .11
-                elif distance > 2:
-                    counter += .2
-                elif distance > 1:
-                    counter += .2
-                elif distance > 0:
                     counter += .3
+                elif distance > 2:
+                    counter += .5
+                elif distance > 1:
+                    counter += .7
+                elif distance > 0:
+                    counter += .9
                 elif distance == 0:
-                    counter += .8
+                    counter += 1
 
-        if counter > 1:
-            counter = 1
         return counter
+
+
+    def food(self, myInv, newState, currentState):
+        whoseTurn = currentState.whoseTurn
+        newfoodCount = myInv.foodCount
+
+        for inv in currentState.inventories:
+            if inv.player == whoseTurn:
+                #print inv.foodCount
+                currentFood = inv.foodCount
+
+
+        if newfoodCount > currentFood:
+            return 10
+        else:
+            return 0
+
 
     #winningMove
     #
