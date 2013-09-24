@@ -138,9 +138,6 @@ class AIPlayer(Player):
     #self, move, newState, currentState, qualOfState, parentNode
     def exploreTree(self, currentState, PID = 0, depth = 0, depthLimit = 1, parentNode = None):
 
-        #if depth == 0:
-        #   ParentNode = None
-
 
         if (depth == depthLimit):
             nodesToChooseFrom = []
@@ -155,13 +152,17 @@ class AIPlayer(Player):
 
         else:
             depth+= 1
+            nodeList = []
             for move in listAllLegalMoves(currentState):
                 newState = self.simulateMove(move, currentState.fastclone())
                 qualOfState = self.stateQuality(newState, currentState)
                 node = StateNode(move, newState, qualOfState, parentNode)
                 successorNode = self.exploreTree(node.currentState, PLAYER_ONE, depth, 1, node)
                 node.evaluation = (node.evaluation+successorNode.evaluation*(depthLimit-depth))/(depthLimit-depth-1)
-                return node
+                nodeList.append(node)
+
+            theB = self.bestNode(nodeList)
+            return theB
 
 
 
@@ -170,8 +171,9 @@ class AIPlayer(Player):
         qualOfState = None
         parentNode = None
         node = StateNode(move, currentState, qualOfState, parentNode)
-        return self.exploreTree(currentState, PLAYER_TWO, 0, 1, node)
-
+        bestNode = self.exploreTree(currentState, PLAYER_TWO, 0, 1, node)
+        print bestNode.evaluation
+        return bestNode.arrivalMove
 
 
     ##
