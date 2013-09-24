@@ -239,7 +239,7 @@ class AIPlayer(Player):
                     if ant.coords[1] < 4:
                         if constr.type == FOOD and not ant.carrying:
                             ant.carrying = True
-                        elif constr.type <= TUNNEL and ant.carrying:
+                        elif constr.type == (TUNNEL or ANTHILL) and ant.carrying:
                             ant.carrying = False
                             inv.foodCount += 1
                             #print "z"
