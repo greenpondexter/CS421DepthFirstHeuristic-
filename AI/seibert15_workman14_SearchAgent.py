@@ -173,8 +173,9 @@ class AIPlayer(Player):
         qualOfState = 0
         parentNode = None
         node = StateNode(move, currentState, qualOfState, parentNode)
-        #print ",,,,", node.evaluation
         bestNode = self.exploreTree(currentState, self.playerId, 0, 1, node)
+        sys.stdout.flush()
+        print bestNode.arrivalMove
         print bestNode.evaluation
         return bestNode.arrivalMove
 
@@ -245,7 +246,7 @@ class AIPlayer(Player):
                             #print "z"
                     #if the worker is sitting on an anthill or tunnel on the other side of the
                     #board, modify capture health
-                    elif constr.type <= TUNNEL:
+                    elif constr.type == (TUNNEL or ANTHILL):
                         if constr.captureHealth > 1:
                             constr.captureHealth -= 1
                             for c in theirInv.constrs:
@@ -279,9 +280,9 @@ class AIPlayer(Player):
             else:
                 inv = theirInv
 
-        for inv in newState.inventories:
-            if inv.player == newState.whoseTurn:
-                myInv = inv
+        #for inv in newState.inventories:
+        #    if inv.player == newState.whoseTurn:
+        #        myInv = inv
 
         for ant in myInv.ants:
             ant.hasMoved = False
@@ -458,7 +459,7 @@ class AIPlayer(Player):
                     counter += .5
                 elif distance == 0:
                     counter += 1
-            elif ant.carrying == True:
+            elif ant.carrying == True and ant.type == WORKER:
                 counter += 1
 
         return counter
@@ -529,6 +530,7 @@ class AIPlayer(Player):
 
 
         if newfoodCount > currentFood:
+            print "jj"
             return 10
         else:
             return 0
