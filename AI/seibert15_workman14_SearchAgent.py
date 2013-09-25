@@ -145,7 +145,7 @@ class AIPlayer(Player):
             nodesToChooseFrom = []
             for move in listAllLegalMoves(currentState):
                 newState = self.simulateMove(move, currentState.fastclone())
-                qualOfState = self.stateQuality(newState, currentState)
+                qualOfState = self.stateQuality(newState)
                 bestNode = StateNode(move, newState, qualOfState, parentNode)
                 nodesToChooseFrom.append(bestNode)
 
@@ -157,10 +157,9 @@ class AIPlayer(Player):
             nodeList = []
             for move in listAllLegalMoves(currentState):
                 newState = self.simulateMove(move, currentState.fastclone())
-                qualOfState = self.stateQuality(newState, currentState)
+                qualOfState = self.stateQuality(newState)
                 node = StateNode(move, newState, qualOfState, parentNode)
                 successorNode = self.exploreTree(node.currentState, self.playerId, depth, depthLimit, node)
-                #node.evaluation = (node.evaluation+successorNode.evaluation*(depthLimit-depth))/(depthLimit-depth-1)
                 nodeList.append(node)
 
             theB = self.bestNode(nodeList)
@@ -174,9 +173,9 @@ class AIPlayer(Player):
         parentNode = None
         node = StateNode(move, currentState, qualOfState, parentNode)
         bestNode = self.exploreTree(currentState, self.playerId, 0, 1, node)
+        print bestNode.arrivalMove.coordList
         sys.stdout.flush()
-        print bestNode.arrivalMove
-        print bestNode.evaluation
+        #print bestNode.evaluation
         return bestNode.arrivalMove
 
 
@@ -193,7 +192,8 @@ class AIPlayer(Player):
     #Return: newState, a copy of the gameState that has been altered as per the move
     #
     def simulateMove(self, move, newState):
-        #designating the inventories to variables
+
+       #designating the inventories to variables
         for inv in newState.inventories:
             if inv.player == newState.whoseTurn:
                 myInv = inv
@@ -219,6 +219,7 @@ class AIPlayer(Player):
                 enemyAntsCoords.append(ant.coords)
             #inRange = self.getAttack(newState, myAnt, theirInv.ants, enemyAntsCoords).coords
             inRange = self.getAttack(newState, myAnt, enemyAntsCoords)
+            #print inRange
             #attacks the inRange ant by lowering its health by one
             if inRange is not None:
                 #lowers ant health by attack power of myAnt
@@ -231,6 +232,7 @@ class AIPlayer(Player):
                 if getAntAt(newState, inRange).health <= 0:
                     deadAnt = getAntAt(newState, inRange)
                     theirInv.ants.remove(deadAnt)
+
             #finds rules for ants sitting on food, tunnels or anthills
             for ant in myInv.ants:
                 constr = getConstrAt(newState, ant.coords)
@@ -249,9 +251,9 @@ class AIPlayer(Player):
                     elif constr.type == (TUNNEL or ANTHILL):
                         if constr.captureHealth > 1:
                             constr.captureHealth -= 1
-                            for c in theirInv.constrs:
-                                if c.coords == constr.coords:
-                                    c = constr
+                            #for c in theirInv.constrs:
+                             #   if c.coords == constr.coords:
+                             #       c
                         #remove if the constr is at health one
                         else:
                             theirInv.constrs.remove(constr)
@@ -280,16 +282,16 @@ class AIPlayer(Player):
             else:
                 inv = theirInv
 
-        #for inv in newState.inventories:
-        #    if inv.player == newState.whoseTurn:
-        #        myInv = inv
+        for inv in newState.inventories:
+            if inv.player == newState.whoseTurn:
+                myInv = inv
 
         for ant in myInv.ants:
             ant.hasMoved = False
 
-        newState.whoseTurn = self.playerId
-
+        #newState.whoseTurn = self.playerId
         return newState
+
 
     ##
     #stateQuality
@@ -302,9 +304,35 @@ class AIPlayer(Player):
     #
     #Return: a value quantifying the quality of the state <= 1 and >= 0 (double)
     #
-    def stateQuality (self, newState, currentState):
+    def stateQuality (self, newState):
         #assigns the inventories to variables
-        for inv in newState.inventories:
+        return self.distToEnemyAnthill(newState)
+
+    def distToEnemyAnthill(self, currentState):
+        for inv in currentState.inventories:
+            if inv.player == currentState.whoseTurn:
+                myInv = inv
+            elif inv.player == PLAYER_ONE:
+                theirInv = inv
+
+        #print theirInv.player
+        anthill = getConstrList(currentState, theirInv.player, (ANTHILL,))
+
+
+        distances = []
+        for ant in myInv.ants:
+            distances.append(stepsToReach(currentState, ant.coords, anthill[0].coords))
+
+
+        points = 0
+        for dist in distances:
+            points += (1.0-(dist/20.0))
+
+        totalPoints = points/myInv.ants.__len__()
+        #print totalPoints
+
+        return totalPoints
+    '''    for inv in newState.inventories:
             if inv.player == newState.whoseTurn:
                 myInv = inv
             else:
@@ -588,7 +616,7 @@ class AIPlayer(Player):
             if ant.carrying == True:
                 return True
         return False
-
+    '''
     ##
     #getPlacement
     #
