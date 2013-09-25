@@ -700,8 +700,8 @@ class AIPlayer(Player):
                             if getAntAt(currentState, inRange) > ant.health:
                                 inRange = ant.coords
 
-        return inRange
-            #return enemyLocations[random.randint(0, len(enemyLocations) - 1)]
+        #return inRange
+        return enemyLocations[random.randint(0, len(enemyLocations) - 1)]
 
 
 
