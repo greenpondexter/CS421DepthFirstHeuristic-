@@ -46,8 +46,8 @@ class StateNode:
             #create and evaluate the state that will be represented by this node
             self.currentState = newState
             self.evaluation = qualOfState
-            #initialize the array for children
             self.children = []
+            #initialize the array for children
             #go and put self in parent's children list, if it has a parent
             if not parentNode == None:
                 self.parent.children.append(self)
@@ -134,20 +134,117 @@ class AIPlayer(Player):
     #Return Value: the highest scoring node found
     ##
     def exploreTree(self, currentState, PID = 0, depth = 0, depthLimit = 1, parentNode = None):
-        enoughIsEnough = 1
+
+        depth+=1
+        #print depth
         bestSeen = parentNode
-        #base Case
-        if depth == depthLimit:
+        #if we reach the base case and it's max's turn, find the highest evaluated node and return it
+        if depth == depthLimit and PID == self.playerId:
+            bestSeen = parentNode
+            #look at all the pretty nodes on this level
+            for move in listAllLegalMoves(currentState):
+                if move.moveType == BUILD:
+                    continue
+                newState = self.simulateMove(move, currentState.fastclone())
+                qualOfState = self.stateQuality(newState, PID)
+                if qualOfState > bestSeen.evaluation:
+                    bestSeen = StateNode(move, newState, qualOfState, parentNode)
+            bestTuple = bestSeen
+            return bestTuple
+
+        #if we reach the base case and it's min's turn, find the lowest evaluated node and return it
+        elif depth == depthLimit and PID != self.playerId:
             #look at all the pretty nodes on this level
             nodesToChooseFrom = []
+            bestSeen = parentNode
             for move in listAllLegalMoves(currentState):
+                if move.moveType == BUILD:
+                    continue
                 newState = self.simulateMove(move, currentState.fastclone())
-                qualOfState = self.stateQuality(newState)
-                if qualOfState > parentNode.evaluation and qualOfState > bestSeen.evaluation:
+                qualOfState = self.stateQuality(newState, PID)
+                if qualOfState < bestSeen.evaluation:
                     bestSeen = StateNode(move, newState, qualOfState, parentNode)
-            bestTuple = (bestSeen, bestSeen.evaluation)
+            bestTuple = bestSeen
             return bestTuple
-        #recursive Case
+
+
+        #recursive cases
+        #if we're not at the base case and it's the opponents move, expand proper nodes
+        bestNodes = []
+        otherPossibilities = []
+        if PID != self.playerId:
+            #get the best few nodes to expand
+            for move in listAllLegalMoves(currentState):
+                if move.moveType == BUILD:
+                    continue
+                newState = self.simulateMove(move, currentState.fastclone())
+                qualOfState = self.stateQuality(newState, PID)
+                node = StateNode(move, newState, qualOfState, parentNode)
+
+                if move.moveType == END:
+                    promisingNode = self.exploreTree(newState, self.playerId, depth, depthLimit, parentNode)
+                    node.evaluation = promisingNode.evaluation
+                    #node[0].parent = parentNode
+                    otherPossibilities.append(node)
+
+                elif qualOfState < parentNode.evaluation:
+                    bestNodes.append(node)
+
+            mergedList = bestNodes + otherPossibilities
+            #mergedList = bestNodes
+
+            print depth
+
+            #explore the better nodes now
+            bestNode = parentNode
+            print depth
+            sys.stdout.flush()
+            for node in mergedList:
+                if node.arrivalMove.moveType != END:
+                    promisingNode = self.exploreTree(node.currentState, PID, depth, depthLimit, parentNode)
+                    node.evaluation = promisingNode.evaluation
+                if node.evaluation < bestNode.evaluation:
+                    bestNode = node
+            bestTuple = bestNode
+            return bestTuple
+
+
+        #if we're not at the base case and it's the AIPlayer's move, expand proper nodes
+        else:
+            #get the best few nodes to expand
+            for move in listAllLegalMoves(currentState):
+                if move.moveType == BUILD:
+                    continue
+                newState = self.simulateMove(move, currentState.fastclone())
+                qualOfState = self.stateQuality(newState, PID)
+                node = StateNode(move, newState, qualOfState, parentNode)
+
+                if move.moveType == END:
+                    newState = self.simulateMove(move, currentState.fastclone())
+                    qualOfState = self.stateQuality(newState, PID)
+                    promisingNode = self.exploreTree(newState, math.fabs(self.playerId - 1), depth, depthLimit, parentNode)
+                    node.evaluation = promisingNode.evaluation
+                    #node[0].parent = parentNode
+                    otherPossibilities.append(node)
+
+                elif qualOfState > parentNode.evaluation:
+                    bestNodes.append(node)
+
+            mergedList = bestNodes + otherPossibilities
+            #explore the better nodes now
+            bestNode = mergedList[0]
+            for node in mergedList:
+                if node.arrivalMove.moveType != END:
+                    promisingNode = self.exploreTree(node.currentState, PID, depth, depthLimit, parentNode)
+                    if promisingNode.evaluation > bestNode.evaluation:
+                        node.evaluation = promisingNode.evaluation
+                        bestNode = node
+            bestTuple = bestNode
+            return bestTuple
+
+
+
+        '''
         else:
             depth += 1
             nodeList = []
@@ -161,7 +258,7 @@ class AIPlayer(Player):
 
             bestTuple = bestSeen, bestSeen.evaluation
             return bestTuple
-
+            '''
 
     ##
     #getMove
@@ -174,11 +271,12 @@ class AIPlayer(Player):
     ##
     def getMove(self, currentState):
         move = None
-        qualOfState = 0
+        qualOfState = self.stateQuality(currentState, self.playerId)
         parentNode = None
         node = StateNode(move, currentState, qualOfState, parentNode)
-        resultantTuple = self.exploreTree(currentState, self.playerId, 0, 2, node)
-        return resultantTuple[0].arrivalMove
+        resultantTuple = self.exploreTree(currentState, self.playerId, 0, 3, node)
+        #print resultantTuple[0].arrivalMove
+        return resultantTuple.arrivalMove
 
 
     ##
@@ -207,12 +305,14 @@ class AIPlayer(Player):
             src = move.coordList[0]
             dst = move.coordList[-1]
             #assigns the ant to myAnt and changes its coords in the inventory
+            myAnt = None
             for ant in myInv.ants:
                 if ant.coords == src:
                     ant.coords = dst
                     myAnt = ant
+            myAnt.hasMoved = True
             #Prepare to attack an enemy
-            enemyAnts = getAntList(newState, PLAYER_ONE, (QUEEN, WORKER, DRONE, SOLDIER, R_SOLDIER))
+            enemyAnts = getAntList(newState, math.fabs(self.playerId - 1), (QUEEN, WORKER, DRONE, SOLDIER, R_SOLDIER))
             enemyAntsCoords = []
             for ant in enemyAnts:
                 enemyAntsCoords.append(ant.coords)
@@ -267,19 +367,17 @@ class AIPlayer(Player):
                 newAnt = Ant(loc, move.buildType, newState.whoseTurn)
                 #newState.board[loc[1]][loc[1]].ant = newAnt
                 myInv.ants.append(newAnt)
+
+        if move.moveType == END:
+            newState.whoseTurn == math.fabs(newState.whoseTurn - 1)
+
         #update the inventories and return the state
         for inv in newState.inventories:
             if inv.player == newState.whoseTurn:
-                inv = myInv
-            else:
-                inv = theirInv
-
-        for inv in newState.inventories:
-            if inv.player == newState.whoseTurn:
                 myInv = inv
-
+        '''
         for ant in myInv.ants:
-            ant.hasMoved = False
+            ant.hasMoved = False'''
         return newState
 
 
@@ -294,9 +392,41 @@ class AIPlayer(Player):
     #Return: a value quantifying the quality of the state <= 1 and >= 0 (double)
     #
     ##
-    def stateQuality(self, newState):
+
+    def stateQuality(self, newState, PID = 0):
+        #assigns the inventories to variables
+        score = self.distToEnemyQueen(newState, PID)
+        return score
+
+    def distToEnemyAnthill(self, currentState, PID = 0):
+        for inv in currentState.inventories:
+            if inv.player == PID:
+                myInv = inv
+            elif inv.player == math.fabs(PID-1):
+                theirInv = inv
+
+        #print theirInv.player
+        anthill = getConstrList(currentState, theirInv.player, (ANTHILL,))
+
+
+        distances = []
+        for ant in myInv.ants:
+            distances.append(stepsToReach(currentState, ant.coords, anthill[0].coords))
+
+
+        points = 0
+        for dist in distances:
+            points += (1.0-(dist/20.0))
+
+        totalPoints = points/myInv.ants.__len__()
+        print totalPoints
+    '''
+    def stateQuality(self, newState, PID = 0):
         #The quality of the state is defined as the average distance to the enemy anthill
-        myInv = getCurrPlayerInventory(newState)
+        #myInv = getCurrPlayerInventory(newState)
+        myInv = PID
+        theirInv = math.fabs(PID-1)
+
 
         theirInv = None
         for inv in newState.inventories:
@@ -304,14 +434,18 @@ class AIPlayer(Player):
                         theirInv = inv
                         break
 
+
         antCountMetric = self.antCount(myInv, theirInv)
         totalAntHealthMetric = self.totalAntHealth(myInv, theirInv)
         distToEnemyQueenMetric = self.distToEnemyQueen(newState)
         #average of the three hueristic functions
         total = antCountMetric + totalAntHealthMetric + distToEnemyQueenMetric
         total = total / 3
-        return total
-
+        if PID != self.playerId:
+            return 1-total
+        else:
+            return total
+    '''
     ##
     #distToEnemyQueen
     #
@@ -323,16 +457,18 @@ class AIPlayer(Player):
     #Return Value: a score, as a float
     #
     ##
-    def distToEnemyQueen(self, currentState):
+    def distToEnemyQueen(self, currentState, PID=0):
         #Retrieve the inventories of each player
         for inv in currentState.inventories:
-            if inv.player == currentState.whoseTurn:
+            if inv.player == PID:
                 myInv = inv
-            elif inv.player == PLAYER_ONE:
+            elif inv.player == math.fabs(PID-1):
                 theirInv = inv
 
-        #Get DAT ANTHILL
-        eneQueen = theirInv.getQueen()
+        #Get the queen
+        for ant in theirInv.ants:
+            if ant.type == QUEEN:
+                eneQueen = ant
 
         #Check the number of spaces to reach the enemy anthill
         distances = []
@@ -345,8 +481,8 @@ class AIPlayer(Player):
             points += (1.0-(dist/20.0))
         totalPoints = points/len(myInv.ants)
         #don't build ants brah.
-        if len(myInv.ants) > 2:
-            totalPoints *= .5
+        #if len(myInv.ants) > 2:
+        #    totalPoints *= .5
         return totalPoints
 
 
